@@ -62,7 +62,7 @@ for i in range(len(responses)):
     # 雨が降りそうな時間を配列に持つ
     rain = []
     for j in range(0, 24):
-        if hourly_dataframe["precipitation_probability"][j] > 0.0:
+        if hourly_dataframe["precipitation_probability"][j] > 4.0:
             rain.append(f"{j}:00")
     
     
