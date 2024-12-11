@@ -4,8 +4,13 @@ import requests_cache
 import pandas as pd
 from retry_requests import retry
 import discord
+import os
 import asyncio
+from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
+# .envファイルを読み込む
+load_dotenv()
 
 # トークンの取得
 TOKEN = 'MTMxNDk3NzMwMzkyMjQ3NTA0OA.GR_viA.tTccR-bYVZENkCZMPE3tbu_joWDREuBAyg3kT0'
@@ -21,9 +26,20 @@ openmeteo = openmeteo_requests.Client(session = retry_session)
 # Make sure all required weather variables are listed here
 # The order of variables in hourly or daily is important to assign them correctly below
 url = "https://api.open-meteo.com/v1/forecast"
+
+first_locate = os.getenv('FIRST_LOCATE')
+second_locate = os.getenv('SECOND_LOCATE')
+
+first_locate_lat = os.getenv('FIRST_LOCATE_LATITUDE') 
+first_locate_lon = os.getenv('FIRST_LOCATE_LONGITUDE')
+
+second_locate_lat = os.getenv('SECOND_LOCATE_LATITUDE') 
+second_locate_lon = os.getenv('SECOND_LOCATE_LONGITUDE')
+
+
 params = {
-	"latitude": [35.8667, 35.9081],
-	"longitude": [140.0167, 139.6566],
+	"latitude": [first_locate_lat, second_locate_lat],
+	"longitude": [first_locate_lon, second_locate_lon],
 	"hourly": "precipitation_probability",
 	"daily": ["temperature_2m_max", "temperature_2m_min"],
 	"timezone": "GMT",
@@ -94,9 +110,9 @@ async def send_message(channel):
     
         # メッセージを作成
         if i == 0:
-            message += "我孫子市\n"
+            message += f"{first_locate}\n"
         elif i == 1:
-            message += "さいたま市\n"
+            message += f"{second_locate}\n"
     
         # 最高気温と最低気温を小数点第一位まで丸める
         max_temp = round(float(daily_dataframe['temperature_2m_max'][0]), 1)
@@ -109,9 +125,10 @@ async def send_message(channel):
             message += "雨が降りそうな時間帯 : "
             for k in range(len(rain)):
                 message += f"{rain[k]} "
+            message += "\n"
     
         if i == 0:
-            message += "\n\n"
+            message += "\n"
     
     await channel.send(message)
         
