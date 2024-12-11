@@ -13,10 +13,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # トークンの取得
-TOKEN = 'MTMxNDk3NzMwMzkyMjQ3NTA0OA.GR_viA.tTccR-bYVZENkCZMPE3tbu_joWDREuBAyg3kT0'
-
+TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 # チャンネルのID
-CHANNEL_ID = 1313372034985885707
+CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
 
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
