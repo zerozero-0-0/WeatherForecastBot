@@ -140,7 +140,7 @@ async def send_message(channel):
 async def on_ready():
     print('ログインに成功しました')
     channel = client.get_channel(CHANNEL_ID)
-    channel.send("Botが起動しました")
+    await.channel.send("Botが起動しました")
     
     while not client.is_closed():
         now = datetime.now()
