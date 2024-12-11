@@ -141,7 +141,6 @@ async def on_ready():
     print('ログインに成功しました')
     channel = client.get_channel(CHANNEL_ID)
     await channel.send("Botが起動しました")
-    
     while not client.is_closed():
         now = datetime.now()
         target_time = now.replace(hour = HOUR, minute = MINUTE, second = SECOND)
@@ -150,7 +149,11 @@ async def on_ready():
             target_time += timedelta(days = 1)
             
         wait_time = (target_time - now).total_seconds()
+        
+        await channel.send(f"次回の送信は{target_time}です")
+        
         await asyncio.sleep(wait_time)
+        
         
         try:
             await send_message(channel)
