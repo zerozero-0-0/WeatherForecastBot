@@ -1,16 +1,11 @@
 import openmeteo_requests
 
 import requests_cache
-import pandas as pd
 from retry_requests import retry
 import discord
 import os
 import asyncio
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
-
-# .envファイルを読み込む
-load_dotenv()
 
 # トークンの取得
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
