@@ -18,8 +18,8 @@ TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
 
 #メッセージを送る時間を指定
-HOUR = 9
-MINUTE = 38
+HOUR = 6
+MINUTE = 0
 SECOND = 0
 
 # Setup the Open-Meteo API client with cache and retry on error
