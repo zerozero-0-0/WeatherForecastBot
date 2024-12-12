@@ -19,7 +19,7 @@ CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
 
 #メッセージを送る時間を指定
 HOUR = 9
-MINUTE = 0
+MINUTE = 3
 SECOND = 0
 
 # Setup the Open-Meteo API client with cache and retry on error
