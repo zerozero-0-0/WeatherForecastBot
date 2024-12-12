@@ -7,3 +7,4 @@ pandas==2.2.3
 requests==2.32.3
 requests-cache==1.2.1
 retry-requests==2.0.0
+python-dotenv==1.0.1
