@@ -1,6 +1,6 @@
-FROM python:3.11
+FROM python:3.12.3
 WORKDIR /bot
 COPY requirements.txt /bot/
 RUN pip install -r requirements.txt
 COPY . /bot
-CMD python main.py
+CMD python3 main.py
