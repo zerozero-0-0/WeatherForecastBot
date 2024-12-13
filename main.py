@@ -13,7 +13,7 @@ TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
 
 #メッセージを送る時間を指定
-HOUR = 12
+HOUR = 6
 MINUTE = 0
 SECOND = 0
 
