@@ -41,7 +41,7 @@ params = {
 	"longitude": [first_locate_lon, second_locate_lon],
 	"hourly": "precipitation_probability",
 	"daily": ["temperature_2m_max", "temperature_2m_min"],
-	"timezone": "GMT",
+	"timezone": "Asia/Tokyo",
 	"forecast_days": 1
 }
 
