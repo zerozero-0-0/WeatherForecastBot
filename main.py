@@ -6,6 +6,11 @@ import discord
 import os
 import asyncio
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
+
+# タイムゾーンの設定
+JST = ZoneInfo("Asia/Tokyo")
 
 # トークンの取得
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
@@ -116,7 +121,7 @@ async def on_ready():
     channel = client.get_channel(CHANNEL_ID)
     await channel.send("Botが起動しました")
     while not client.is_closed():
-        now = datetime.now()
+        now = datetime.now(JST)
         target_time = now.replace(hour = HOUR, minute = MINUTE, second = SECOND)
 
         if now > target_time:
