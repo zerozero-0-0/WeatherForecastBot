@@ -136,9 +136,5 @@ async def on_ready():
             print(f"次回の送信は{target_time}です\n")
         except Exception as e:
             print(f"メッセージの送信に失敗しました:{e}")
-        
-        await asyncio.sleep(24 * 60 * 60)
-    
+            
 client.run(TOKEN)
-
-
