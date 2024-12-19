@@ -87,7 +87,7 @@ async def send_message(channel):
         # 雨が降りそうな時間を配列に持つ
         rain = []
         for j in range(0, 24):
-            if hourly_precipitation_probability[j] > 40.0:
+            if hourly_precipitation_probability[j] >= 30.0:
                 rain.append(f"{j}:00")
     
     
