@@ -112,7 +112,9 @@ async def send_message(channel):
     
         if i == 0:
             message += "\n"
-    
+
+        message += "これはデバッグ用のメッセージです\n"
+        message += f"{len(hourly_precipitation_probability)}\n"
     await channel.send(message)
         
 @client.event
