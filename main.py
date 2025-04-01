@@ -1,5 +1,4 @@
 import openmeteo_requests
-
 import requests_cache
 from retry_requests import retry
 import discord
@@ -7,7 +6,9 @@ import os
 import asyncio
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # タイムゾーンの設定
 JST = ZoneInfo("Asia/Tokyo")
