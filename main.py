@@ -40,7 +40,6 @@ first_locate_lon = os.getenv('FIRST_LOCATE_LONGITUDE')
 second_locate_lat = os.getenv('SECOND_LOCATE_LATITUDE') 
 second_locate_lon = os.getenv('SECOND_LOCATE_LONGITUDE')
 
-
 params = {
 	"latitude": [first_locate_lat, second_locate_lat],
 	"longitude": [first_locate_lon, second_locate_lon],
