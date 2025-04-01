@@ -1,3 +1,4 @@
 .env
 fly.toml
 .github/
+.cache.sqlite.cache.sqlite
