@@ -34,13 +34,13 @@ openmeteo = openmeteo_requests.Client(session = retry_session)
 # The order of variables in hourly or daily is important to assign them correctly below
 url = "https://api.open-meteo.com/v1/forecast"
 
-first_locate = os.environ.get["FIRST_LOCATE"]
-second_locate = os.environ.get["SECOND_LOCATE"]
+first_locate = os.environ["FIRST_LOCATE"]
+second_locate = os.environ["SECOND_LOCATE"]
 
-first_locate_lat = os.environ.get["FIRST_LOCATE_LATITUDE"]
-first_locate_lon = os.environ.get["FIRST_LOCATE_LONGITUDE"]
-second_locate_lat = os.environ.get["SECOND_LOCATE_LATITUDE"]
-second_locate_lon = os.environ.get["SECOND_LOCATE_LONGITUDE"]
+first_locate_lat = os.environ["FIRST_LOCATE_LATITUDE"]
+first_locate_lon = os.environ["FIRST_LOCATE_LONGITUDE"]
+second_locate_lat = os.environ["SECOND_LOCATE_LATITUDE"]
+second_locate_lon = os.environ["SECOND_LOCATE_LONGITUDE"]
 
 params = {
 	"latitude": [first_locate_lat, second_locate_lat],
