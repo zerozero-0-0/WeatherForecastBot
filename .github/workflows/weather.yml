@@ -24,10 +24,10 @@ jobs:
             - name: Run the bot
               env:
                 DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-                first_locate: ${{ secrets.FIRST_LOCATE }}
-                second_locate: ${{ secrets.SECOND_LOCATE }}
-                first_locate_lat: ${{ secrets.FIRST_LOCATE_LATITUDE }}
-                first_locate_lon: ${{ secrets.FIRST_LOCATE_LONGITUDE }}
-                second_locate_lat: ${{ secrets.SECOND_LOCATE_LATITUDE }}
-                second_locate_lon: ${{ secrets.SECOND_LOCATE_LONGITUDE }}
+                FIRST_LOCATE: ${{ secrets.FIRST_LOCATE }}
+                SECOND_LOCATE: ${{ secrets.SECOND_LOCATE }}
+                FIRST_LOCATE_LATITUDE: ${{ secrets.FIRST_LOCATE_LATITUDE }}
+                FIRST_LOCATE_LONGITUDE: ${{ secrets.FIRST_LOCATE_LONGITUDE }}
+                SECOND_LOCATE_LATITUDE: ${{ secrets.SECOND_LOCATE_LATITUDE }}
+                SECOND_LOCATE_LONGITUDE: ${{ secrets.SECOND_LOCATE_LONGITUDE }}
               run: python main.py
