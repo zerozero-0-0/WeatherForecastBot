@@ -5,9 +5,6 @@ from retry_requests import retry
 import discord
 import os
 from zoneinfo import ZoneInfo
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 
