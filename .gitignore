@@ -1,4 +1,4 @@
 .env
 fly.toml
-.github
 .cache.sqlite
+fly-deploy.yml

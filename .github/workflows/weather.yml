@@ -1,0 +1,27 @@
+name: weather-forecast-bot
+
+on:
+    schedule:
+        - cron: '0 21 * * *'
+    workflow_dispatch:
+
+jobs:
+    send-weather:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+              
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                python-version: '3.11'
+
+            - name: Install dependencies
+              run: pip install -r requirements.txt
+
+            - name: Run the bot
+              env:
+                DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+              run: python main.py
