@@ -10,13 +10,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+
 # タイムゾーンの設定
 JST = ZoneInfo("Asia/Tokyo")
 
 # トークンの取得
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 # チャンネルのID
-CHANNEL_ID = os.getenv('CHANNEL_ID')
+CHANNEL_ID = os.environ.get('CHANNEL_ID')
 
 CHANNEL_ID = int(CHANNEL_ID)
 
