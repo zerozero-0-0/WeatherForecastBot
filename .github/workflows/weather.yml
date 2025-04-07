@@ -24,4 +24,12 @@ jobs:
             - name: Run the bot
               env:
                 DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+                TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+                CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+                first_locate: ${{ secrets.FIRST_LOCATE }}
+                second_locate: ${{ secrets.SECOND_LOCATE }}
+                first_locate_lat: ${{ secrets.FIRST_LOCATE_LATITUDE }}
+                first_locate_lon: ${{ secrets.FIRST_LOCATE_LONGITUDE }}
+                second_locate_lat: ${{ secrets.SECOND_LOCATE_LATITUDE }}
+                second_locate_lon: ${{ secrets.SECOND_LOCATE_LONGITUDE }}
               run: python main.py
