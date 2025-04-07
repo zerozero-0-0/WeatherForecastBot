@@ -16,7 +16,9 @@ JST = ZoneInfo("Asia/Tokyo")
 # トークンの取得
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 # チャンネルのID
-CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
+CHANNEL_ID = os.getenv('CHANNEL_ID')
+
+CHANNEL_ID = int(CHANNEL_ID)
 
 #メッセージを送る時間を指定
 HOUR = 6
