@@ -1,0 +1,20 @@
+name: Keepalive
+
+on:
+  schedule:
+    # UTC で 週1（月曜 00:00）※お好みで。UTC→JST(+9h)に注意
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v1
+        with:
+          # 何日無コミットで“活動”させるか。60未満に設定
+          time_elapsed: 45
