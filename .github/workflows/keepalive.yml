@@ -1,20 +1,66 @@
-name: Keepalive
+name: Keepalive (pure API)
 
 on:
   schedule:
-    # UTC で 週1（月曜 00:00）※お好みで。UTC→JST(+9h)に注意
+    # 例: 毎週月曜 00:00 UTC（JST 09:00）。時刻はお好みで調整してください
     - cron: "0 0 * * 1"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write   # API でファイル更新するため必須
 
 jobs:
   keepalive:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: gautamkrishnar/keepalive-workflow@v1
-        with:
-          # 何日無コミットで“活動”させるか。60未満に設定
-          time_elapsed: 45
+      - name: Upsert .github/keepalive.txt via GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          FILEPATH: .github/keepalive.txt
+        shell: bash
+        run: |
+          set -euo pipefail
+          API="https://api.github.com"
+          NOW="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+          # 既存ファイルの sha を取得（なければ空）
+          SHA="$(curl -sS -H "Authorization: Bearer ${GH_TOKEN}" \
+                    -H "Accept: application/vnd.github+json" \
+                    "${API}/repos/${REPO}/contents/${FILEPATH}" \
+                | python3 - <<'PY' || true
+import sys, json
+try:
+  d=json.load(sys.stdin)
+  print(d.get("sha",""))
+except:
+  pass
+PY
+          )"
+
+          # コミットメッセージ
+          MSG="chore: keepalive ${NOW}"
+
+          # コンテンツを base64 化（GNU/BusyBox両対応）
+          if base64 --help 2>&1 | grep -qi '\-w'; then
+            B64_CONTENT="$(printf '%s' "${NOW}" | base64 -w0)"
+          else
+            B64_CONTENT="$(printf '%s' "${NOW}" | base64)"
+          fi
+
+          # JSON ペイロードを手書きで作成（jq 不要）
+          if [ -n "${SHA}" ]; then
+            DATA="$(printf '{"message":"%s","content":"%s","sha":"%s"}' "${MSG}" "${B64_CONTENT}" "${SHA}")"
+          else
+            DATA="$(printf '{"message":"%s","content":"%s"}' "${MSG}" "${B64_CONTENT}")"
+          fi
+
+          # PUT で作成/更新
+          curl -sS -X PUT \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -d "${DATA}" \
+            "${API}/repos/${REPO}/contents/${FILEPATH}" \
+            >/dev/null
+
+          echo "Keepalive updated at ${NOW}"
