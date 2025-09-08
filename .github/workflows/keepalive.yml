@@ -1,66 +1,42 @@
-name: Keepalive (pure API)
+name: Keep GitHub Actions Active (keepalive)
 
 on:
   schedule:
-    # 例: 毎週月曜 00:00 UTC（JST 09:00）。時刻はお好みで調整してください
-    - cron: "0 0 * * 1"
+    - cron: '0 3 * * 0'
   workflow_dispatch:
 
 permissions:
-  contents: write   # API でファイル更新するため必須
+  contents: write
+
+concurrency:
+  group: keepalive
+  cancel-in-progress: false
 
 jobs:
   keepalive:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Upsert .github/keepalive.txt via GitHub API
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure Git author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Update keepalive stamp and push
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          FILEPATH: .github/keepalive.txt
-        shell: bash
+          TZ: UTC
         run: |
           set -euo pipefail
-          API="https://api.github.com"
-          NOW="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          branch="keepalive"
+          git checkout -B "$branch"
+          mkdir -p .github
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .github/KEEPALIVE
+          git add .github/KEEPALIVE
+          git commit -m "chore: keepalive [skip ci]" || echo "No changes to commit"
+          git push origin "HEAD:$branch"
 
-          # 既存ファイルの sha を取得（なければ空）
-          SHA="$(curl -sS -H "Authorization: Bearer ${GH_TOKEN}" \
-                    -H "Accept: application/vnd.github+json" \
-                    "${API}/repos/${REPO}/contents/${FILEPATH}" \
-                | python3 - <<'PY' || true
-import sys, json
-try:
-  d=json.load(sys.stdin)
-  print(d.get("sha",""))
-except:
-  pass
-PY
-          )"
-
-          # コミットメッセージ
-          MSG="chore: keepalive ${NOW}"
-
-          # コンテンツを base64 化（GNU/BusyBox両対応）
-          if base64 --help 2>&1 | grep -qi '\-w'; then
-            B64_CONTENT="$(printf '%s' "${NOW}" | base64 -w0)"
-          else
-            B64_CONTENT="$(printf '%s' "${NOW}" | base64)"
-          fi
-
-          # JSON ペイロードを手書きで作成（jq 不要）
-          if [ -n "${SHA}" ]; then
-            DATA="$(printf '{"message":"%s","content":"%s","sha":"%s"}' "${MSG}" "${B64_CONTENT}" "${SHA}")"
-          else
-            DATA="$(printf '{"message":"%s","content":"%s"}' "${MSG}" "${B64_CONTENT}")"
-          fi
-
-          # PUT で作成/更新
-          curl -sS -X PUT \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            -d "${DATA}" \
-            "${API}/repos/${REPO}/contents/${FILEPATH}" \
-            >/dev/null
-
-          echo "Keepalive updated at ${NOW}"
